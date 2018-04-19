@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>转子运程状态监控系统</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/echarts.min.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="jumbotron">
+			<h2 class="text-left">CHENG转子运程状态监控系统</h2>
+			<p class="text-right">
+				<a href="#">用户登录</a>
+				|
+				<a href="#">用户注册</a>
+			</p>
+		</div>
+		<!-- 导航栏 -->
+		<ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true" href="#home">主页</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="online-monitor-tab" data-toggle="tab" role="tab" aria-controls="online-monitor" aria-selected="true"
+				 href="#online-monitor">在线监测</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="rate-test-tab" data-toggle="tab" role="tab" aria-controls="rate-test" aria-selected="true" href="#rate-test">频率测试</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="diagnostic-aid-tab" data-toggle="tab" role="tab" aria-controls="diagnostic-aid" href="#diagnostic-aid">诊断助手</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="my-record-tab" data-toggle="tab" role="tab" aria-controls="my-record" aria-selected="true" href="#my-record">我的记录</a>
+			</li>
+		</ul>
+
+		<!-- 面板内容 -->
+		<div class="tab-content" id="myTabContent">
+			<!-- 主页 -->
+			<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+				<div class="container" style="margin-top: 10px; padding-bottom: 10px; background:#ffffff url('png/home_backgound.jpg') repeat center center;">
+					<div class="row" style="height: 450px;">
+						<div class="col-2"></div>
+						<div class="col-8 align-self-center">
+							<div class="input-group input-group-lg mb-3">
+								<input type="text" class="form-control" placeholder="请输入" aria-label="Recipient's username" aria-describedby="basic-addon2">
+								<div class="input-group-append">
+									<button class="btn btn-secondary" type="button">搜索</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-2"></div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 在线监测 -->
+			<div class="tab-pane fade" id="online-monitor" role="tabpanel" aria-labelledby="online-monitor-tab">
+				<div class="container">
+					<div class="row">
+						<div class="mx-auto" style="width:600px">
+							<div id="time_wave_canvas" style="width: 600px;height:400px;"></div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="mx-auto" style="width: 600px">
+							<div id="bar_canvas" style="width: 600px; height: 400px;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 频率测试 -->
+			<div class="tab-pane fade" id="rate-test" role="tabpanel" aria-labelledby="rate-test-tab">
+				<div class="container">
+					<div class="row">
+						<div class="mx-auto" style="width:600px">
+							<div id="trend_analysis_canvas" style="width: 600px;height:400px;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 诊断 -->
+			<div class="tab-pane fade" id="diagnostic-aid" role="tabpanel" aria-labelledby="diagnostic-aid-tab">
+				<div class="container" style="margin-top: 10px;">
+					<div class="row">
+						<div class="col-12">
+							<h4 class="text-center">表1：振动特征</h4>
+							<table class="table table-striped table-bordered table-sm">
+								<thead>
+									<tr>
+										<th scope="col" style="width: 8%; text-align: center;">#</th>
+										<th scope="col" style="width: 10%; text-align: center;">特征频率</th>
+										<th scope="col" style="width: 6%; text-align: center;">常伴频率</th>
+										<th scope="col" style="width: 10%; text-align: center;">振动稳定性</th>
+										<th scope="col" style="width: 10%; text-align: center;">振动方向</th>
+										<th scope="col" style="width: 10%; text-align: center;">相位特征</th>
+										<th scope="col" style="width: 10%; text-align: center;">轴心轨迹</th>
+										<th scope="col" style="width: 10%; text-align: center;">进动方向</th>
+										<th scope="col" style="width: 7%; text-align: center;">矢量区域</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="text-center">
+										<th scope="row">转子质量偏心</th>
+										<td>1X</td>
+										<td></td>
+										<td>稳定</td>
+										<td>径向</td>
+										<td>稳定</td>
+										<td>椭圆</td>
+										<td>正进动</td>
+										<td>不变</td>
+									</tr>
+									<tr class="text-center">
+										<th scope="row">转子部件缺损</th>
+										<td>1X</td>
+										<td></td>
+										<td>突发性增大后稳定</td>
+										<td>径向</td>
+										<td>突变后稳定</td>
+										<td>椭圆</td>
+										<td>正进动</td>
+										<td>突变后稳定</td>
+									</tr>
+									<tr class="text-center">
+										<th scope="row">转子与静子径向摩擦</th>
+										<td>高次谐波、低次谐波及其他组合谐波</td>
+										<td>1X</td>
+										<td>不稳</td>
+										<td>径向</td>
+										<td>连续摩擦：反向位移、跳动、突变；局部摩擦：反向位移</td>
+										<td>连续摩擦：扩散；局部摩擦：紊乱</td>
+										<td>连续摩擦：反进动；局部摩擦：正进动</td>
+										<td>突变</td>
+									</tr>
+									<tr class="text-center">
+										<th scope="row">转子不对中</th>
+										<td>2X</td>
+										<td>1X、3X</td>
+										<td>稳定</td>
+										<td>径向、轴向</td>
+										<td>较稳定</td>
+										<td>双环椭圆</td>
+										<td>正进动</td>
+										<td>不变</td>
+									</tr>
+									<tr class="text-center">
+										<th scope="row">转子轴承松动</th>
+										<td>基频及分数谐波</td>
+										<td>2X、3X</td>
+										<td>不稳定；达到阈值后突然增大或减小</td>
+										<td>松动方向振动大</td>
+										<td>不稳定</td>
+										<td>紊乱</td>
+										<td>正进动</td>
+										<td>变动</td>
+									</tr>
+									<tr class="text-center">
+										<th scope="row">油膜涡动</th>
+										<td>
+											<=0.5X</td>
+												<td>1X</td>
+												<td>较稳定</td>
+												<td>径向</td>
+												<td>稳定</td>
+												<td>双环椭圆</td>
+												<td>正进动</td>
+												<td>改变</td>
+									</tr>
+									<tr class="text-center">
+										<th scope="row">油膜振荡</th>
+										<td>
+											<0.5x(0.43-0.48x)</td>
+												<td>组合频率</td>
+												<td>不稳定</td>
+												<td>径向</td>
+												<td>不稳定(突变)</td>
+												<td>扩散不规则</td>
+												<td>正进动</td>
+												<td>改变</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 我的记录 -->
+			<div class="tab-pane fade" id="my-record" role="tabpanel" aria-labelledby="my-record-tab">
+				<div class="container" style="margin-top: 10px;padding-bottom: 10px; background:#ffffff url('png/record_background.jpg') repeat center center;">
+					<div class="row" style="height: 450px;">
+						<div class="col-2"></div>
+						<div class="col-8 align-self-center">
+							<div class="input-group" style="margin-bottom: 5px;">
+								<input type="text" class="form-control" placeholder="时间" aria-label="Time" aria-labelledby="basic-time">
+							</div>
+
+							<div class="input-group" style="margin-top: 5px;">
+								<input type="text" class="form-control" placeholder="用户名" aria-label="username" aria-labelledby="basic-username">
+								<div class="input-group-append">
+									<button class="btn btn-primary" type="button">
+										搜索
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-2"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 底部 -->
+	<div class="container" style="padding: 5px;">
+		<div class="card">
+			<div>
+				<p class="text-center">
+					联系我们
+					<br> 如您需要诊断专业的咨询任务，请联系：027-87362751。如您有系统技术问题反馈和建议也请通过以下途径联系我们：
+					<br> Email: whu.cheng.edu.com | Address: 湖北省武汉市武昌区武汉大学工学部 | PostCode: 430072
+					<br>
+					<p class="text-right" style="padding-right: 20px;">Copyright 2018</p>
+				</p>
+			</div>
+		</div>
+	</div>
+</body>
+<!-- 时域波形图  -->
+<script>
+	$(function () {
+		var time_wave_chart = echarts.init(document.getElementById('time_wave_canvas'));
+		time_wave_option = {
+			title: {
+				text: '时域波形图',
+			},
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'cross',
+					label: {
+						backgroundColor: '#283b56'
+					}
+				}
+			},
+			legend: {
+				data: ['幅值']
+			},
+			toolbox: {
+				show: true,
+				feature: {
+					dataView: { readOnly: false },
+					restore: {},
+					saveAsImage: {}
+				}
+			},
+			dataZoom: {
+				show: false,
+				start: 0,
+				end: 100
+			},
+			xAxis: {
+				type: 'category',
+				boundaryGap: true,
+				data: (function () {
+					var now = new Date();
+					var res = [];
+					var len = 400;
+					while (len--) {
+						res.unshift(now.toLocaleTimeString().replace(/^\D*/, '').substring(2));
+						now = new Date(now - 2000);
+					}
+					return res;
+				})()
+			},
+			yAxis: {
+				type: 'value',
+				scale: true,
+				name: '幅值',
+				max: 175,
+				min: -175,
+				boundaryGap: [0.2, 0.2]
+			},
+			series: [
+				{
+					name: '幅值',
+					type: 'line',
+					data: (function () {
+						res = [];
+						for (j = 0; j < 4; j++) {
+							for (i = 0; i < 100; i++) {
+								res.push(Math.sin(Math.PI / 50 * i) * (100 + (Math.random()) * 60));
+							}
+						}
+						return res;
+					})()
+				}
+			]
+		};
+
+		place = 0;
+		setInterval(function () {
+			time_wave_option.series[0].data = (function () {
+				res = [];
+				for (j = 0; j < 4; j++) {
+					for (i = 0; i < 100; i++) {
+						res.push(Math.sin(Math.PI / 50 * i) * (100 + (Math.random()) * 60));
+					}
+				}
+				return res;
+			})()
+			time_wave_chart.setOption(time_wave_option);
+		}, 2000);
+		// 使用刚指定的配置项和数据显示图表。
+		time_wave_chart.setOption(time_wave_option);
+
+		$('#myTab a:first').tab('show');//初始化显示哪个tab  
+
+		$('#myTab a').click(function (e) {
+			e.preventDefault();
+			$(this).tab('show');
+			$($(this).attr('href')).css({
+				"height": "100%",
+				"width": "100%"
+			});
+		})
+	});
+</script>
+
+<!-- 数据文件 -->
+<script src="src/data.js"></script>
+
+<!-- 棒图 -->
+<script>
+	$(function () {
+		var bar_chart = echarts.init(document.getElementById('bar_canvas'));
+
+		bar_option = {
+			title: {
+				text: '棒图',
+			},
+			tooltip: {
+				trigger: 'axis'
+			},
+			toolbox: {
+				show: true,
+				feature: {
+					dataView: { show: true, readOnly: false },
+					restore: { show: true },
+					saveAsImage: { show: true }
+				}
+			},
+			xAxis: [
+				{
+					type: 'category',
+					data: ['X1', 'X2', 'Y1', 'Y2']
+				}
+			],
+			yAxis: [
+				{
+					type: 'value',
+					splitLine: {
+						show: true
+					},
+					min: 0,
+					max: Math.max(bar_data[0])
+					// max: 180,
+					// min: 0,
+				}
+			],
+			series: [
+				{
+					name: '棒图',
+					type: 'bar',
+					data: bar_data[0],
+					label: {
+						normal: {
+							show: true,
+							position: 'top'
+						}
+					},
+				}
+			]
+		};
+
+		index = 1;
+		setInterval(function () {
+			bar_option.series[0].data = bar_data[index];
+			bar_option.yAxis[0].max = Math.max(bar_data[index]) + 10;
+			index = (index + 1) % bar_data.length;
+			bar_chart.setOption(bar_option);
+		}, 2000);
+		// 使用刚指定的配置项和数据显示图表。
+		bar_chart.setOption(bar_option);
+	})
+</script>
+
+<!-- 趋势分析图 -->
+<script>
+	$(function () {
+		var trend_analysis_chart = echarts.init(document.getElementById('trend_analysis_canvas'));
+		trend_analysis_option = {
+			title: {
+				text: '趋势分析图',
+			},
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'cross',
+					label: {
+						backgroundColor: '#283b56'
+					}
+				}
+			},
+			legend: {
+				data: ['幅值']
+			},
+			toolbox: {
+				show: true,
+				feature: {
+					dataView: { readOnly: false },
+					restore: {},
+					saveAsImage: {}
+				}
+			},
+			dataZoom: {
+				show: false,
+				start: 0,
+				end: 100
+			},
+			xAxis: {
+				type: 'category',
+				boundaryGap: true,
+				data: (function () {
+					var now = new Date();
+					var res = [];
+					var len = 100;
+					while (len--) {
+						res.unshift(now.toLocaleTimeString().replace(/^\D*/, '').substring(2));
+						now = new Date(now - 2000);
+					}
+					return res;
+				})()
+			},
+			yAxis: {
+				type: 'value',
+				scale: true,
+				name: '幅值',
+				max: 200,
+				min: 0,
+				boundaryGap: [0.2, 0.2]
+			},
+			series: [
+				{
+					name: '幅值',
+					type: 'line',
+					data: trend_data.slice(0, 100)
+				}
+			]
+		};
+		index = 101
+		setInterval(function () {
+			var data0 = trend_analysis_option.series[0].data;
+			data0.shift(); // 移除第一个元素
+			data0.push(trend_data[index]); // 向末尾添加一个元素
+			index = (index + 1) % trend_data.length;
+
+			// 除了改变数据本身以外，还需要改变坐标轴
+			trend_analysis_option.xAxis.data.shift();
+			now = new Date();
+			trend_analysis_option.xAxis.data.push(now.toLocaleTimeString().replace(/^\D*/, '').substring(2));
+
+			trend_analysis_chart.setOption(trend_analysis_option);
+		}, 2000);
+		// 使用刚指定的配置项和数据显示图表。
+		trend_analysis_chart.setOption(trend_analysis_option);
+	})
+</script>
+
+</html>
